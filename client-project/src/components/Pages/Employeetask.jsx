@@ -41,7 +41,7 @@ function Employeetask() {
   };
 
   const downloadExcel = (id) => {
-    axios.get(`http://localhost:5000/employeetask/getexcel/${id}`, { responseType: 'blob' })
+    axios.get(`http://77.37.49.209:5000/employeetask/getexcel/${id}`, { responseType: 'blob' })
       .then((response) => {
         const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         saveAs(blob, 'data.xlsx');
@@ -107,7 +107,7 @@ function Employeetask() {
 
   const handleSubmit = async () => {
     try {
-      const reslt = await fetch("http://localhost:5000/employeetask/post/Etask", {
+      const reslt = await fetch("http://77.37.49.209:5000/employeetask/post/Etask", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -125,7 +125,7 @@ function Employeetask() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://localhost:5000/employeetask/get/Etask");
+      const response = await fetch("http://77.37.49.209:5000/employeetask/get/Etask");
       const data = await response.json();
       settaskdata(data.rows)
       setFilteredData(data.rows);
