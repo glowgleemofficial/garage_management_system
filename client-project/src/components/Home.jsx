@@ -150,7 +150,7 @@ function Home() {
             </div>
 
 
-            <DashboardDonutChart />
+            {/* <DashboardDonutChart /> */}
 
 
           </main>

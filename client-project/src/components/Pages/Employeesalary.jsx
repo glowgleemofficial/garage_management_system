@@ -43,7 +43,7 @@ function Employeetask() {
   };
 
   const downloadExcel = (id) => {
-    axios.get(`http://77.37.49.209:5000/employeesalary/getexcel/${id}`, { responseType: 'blob' })
+    axios.get(`http://localhost:5000/employeesalary/getexcel/${id}`, { responseType: 'blob' })
       .then((response) => {
         const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         saveAs(blob, 'data.xlsx');
@@ -70,7 +70,7 @@ function Employeetask() {
       salaryStatuses,
     };
 
-    fetch("http://77.37.49.209:5000/employeesalary/post/Esalary", {
+    fetch("http://localhost:5000/employeesalary/post/Esalary", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -87,7 +87,7 @@ function Employeetask() {
   };
 
   const alldata = () =>{
-    fetch("http://77.37.49.209:5000/employeesalary/get/Esalary")
+    fetch("http://localhost:5000/employeesalary/get/Esalary")
     .then(response => response.json())
     .then(data => {
       setalljobs(data.rows);
