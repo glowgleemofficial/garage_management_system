@@ -1,7 +1,7 @@
 import {Route, Routes } from"react-router-dom"
 import Pending from"./components/Pages/Pending"
 import Expenses from"./components/Pages/Expenses"
-// import Signin from "./components/Pages/"
+import Signin from './components/Pages/Signin';
 import Home from"./components/Home"
 import Vehicle from"./components/Pages/Vehicle"
 import Customer from"./components/Pages/Customer"
@@ -20,7 +20,7 @@ function App() {
         <Route path="/pending" element={<Pending />}></Route>
         <Route path="/expenses" element={<Expenses />}></Route>
         <Route path="/home" element={<Home />}></Route>
-        {/* <Route path="/signin" element={<Signin />}></Route> */}
+        <Route path="/signin" element={<Signin />}></Route>
         <Route path="/vehicle" element={<Vehicle />}></Route>
         <Route path="/customer" element={<Customer />}></Route>
         <Route path="/invoice" element={<Invoice />}></Route>
