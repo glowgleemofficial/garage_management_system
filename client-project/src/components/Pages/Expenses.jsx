@@ -8,6 +8,9 @@ import axios from 'axios';
 import { saveAs } from 'file-saver';
 import Navigation from './Navigation';
 import BarChart from '../BarChart';
+import { MdDelete } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
+import Modal from "../Modal";
 
 function Employeetask() {
   const [dropdownOpen, setDropdownOpen] = useState(null);
@@ -23,6 +26,11 @@ function Employeetask() {
   const [filteredData, setFilteredData] = useState([]);
   const [dateFilter, setDateFilter] = useState({ start: '', end: '' });
   const [searchName, setSearchName] = useState('');
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [currentExpenses, setCurrentExpenses] = useState(null);
+  const [formData, setFormData] = useState({});
+  
 
   const toggleDropdown = (index) => {
     setDropdownOpen(dropdownOpen === index ? null : index);
@@ -145,6 +153,57 @@ function Employeetask() {
   const chartLabels = filteredData.map(item => item.date);
   const chartData = filteredData.map(item => item.amount);
 
+  const handleEdit = (expense) => {
+    setCurrentExpenses(expense);
+    setFormData(expense);
+    setEditModalOpen(true);
+  };
+
+  const handleDelete = (expense) => {
+    setCurrentExpenses(expense);
+    setDeleteModalOpen(true);
+  };
+  
+  const handleConfirmDelete = async () => {
+    try {
+      await fetch(`http://localhost:5000/expense/delete/${currentExpenses.id}`, {
+        method: 'DELETE',
+      });
+      setDeleteModalOpen(false);
+      fetchData();
+    } catch (error) {
+      console.error("Error deleting expense:", error);
+    }
+  
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+  const handleSubmitChange = async (e) => {
+    e.preventDefault();
+
+    try {
+      await fetch(`http://localhost:5000/expense/update/${currentExpenses.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      setEditModalOpen(false);
+      fetchData();
+    } catch (error) {
+      console.error("Error updating expense data:", error);
+    }
+  };
+
+
+
   return (
     <div className="bg-gray-100  flex">
       <aside className="w-64 bg-white text-white flex-shrink-0 fixed h-full">
@@ -210,6 +269,9 @@ function Employeetask() {
                   <th className="py-3 px-10 bg-gray-200 text-[#3d3d3d] text-center">Date</th>
                   <th className="py-3 px-4 bg-gray-200 text-[#3d3d3d] text-center">Amount</th> {/* Updated Header */}
                   <th className="py-3 px-16 bg-gray-200 text-[#3d3d3d] text-center">Payment Status</th>
+                  <th className="py-3 px-7 bg-gray-200 text-[#3d3d3d] text-center">
+Action
+</th>
                   {/* <th className="py-3 px-12 bg-gray-200 text-[#3d3d3d] text-center">Download Data</th> */}
                 </tr>
               </thead>
@@ -361,6 +423,24 @@ function Employeetask() {
       <td className="py-3 px-6 text-center text-xs">{task.date}</td>
       <td className="py-3 px-6 text-center text-xs">{task.amount}</td>
       <td className="py-3 px-6 text-center text-xs">{task.payment_status}</td>
+     
+<td className=" text-center text-xs">
+<button
+                           onClick={() => handleEdit(task)}
+
+                          className="text-blue-500  hover:text-blue-700"
+>
+  <FaRegEdit className="h-5 w-5" />
+</button>
+<button
+  onClick={() => handleDelete(task)}
+  className="text-black-500 hover:text-red-700 ml-2"
+>
+  <MdDelete className="h-5 w-6" />
+</button>
+</td>
+
+
       {/* <td className="py-3 px-6 text-center text-xs"> <button className='bg-[#ea8732] p-1 rounded-md text-white font-medium'   onClick={() => downloadExcel(task.id)}>
       Download Excel
     </button></td> */}
@@ -371,6 +451,7 @@ function Employeetask() {
   {[...Array(20)].map((_, index) => (
     <tr key={index} className="border-t">
       <td className="py-3 px-6 text-left text-xs"></td>
+      <td className="py-3 px-6 text-center text-xs"></td>
       <td className="py-3 px-6 text-center text-xs"></td>
       <td className="py-3 px-6 text-center text-xs"></td>
       <td className="py-3 px-6 text-center text-xs"></td>
@@ -387,6 +468,96 @@ function Employeetask() {
         <  BarChart chartData={chartData} chartLabels={chartLabels} />
         </div>
       </div>
+      {editModalOpen && (
+    <Modal   show={editModalOpen}  onClose={() => setEditModalOpen(false)}>
+ <div className="h-auto w-auto">
+ <h2 className="text-lg font-bold">Edit Expense</h2>
+      <form onSubmit={handleSubmitChange}>
+      <div className="grid grid-cols-2 gap-4">
+<div>
+<label className="block text-sm font-medium text-gray-700">Name</label>
+<input
+            type="text"
+            name="name"
+            value={formData.name || ""}
+            onChange={handleChange}
+            className="mt-1 block p-2 h-8 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Vehicle</label>
+              <input
+            type="text"
+            name="vehicle"
+            value={formData.vehicle || ""}
+            onChange={handleChange}
+            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Description</label>
+                      <input
+            type="text"
+            name="description"
+            value={formData.description || ""}
+            onChange={handleChange}
+            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Date</label>
+                      <input
+            type="date"
+            name="date"
+            value={formData.date || ""}
+            onChange={handleChange}
+            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Amount</label>
+                      <input
+            type="text"
+            name="amount"
+            value={formData.amount || ""}
+            onChange={handleChange}
+            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Payment Status</label>
+                      <input
+            type="text"
+            name="payment_status"
+            value={formData.payment_status || ""}
+            onChange={handleChange}
+            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+         </div>
+        <button type="submit"   className="bg-blue-500 text-white py-2 px-4 rounded mt-4"
+>Save Changes</button>
+      </form>
+      </div>
+    </Modal>
+  )}
+
+<Modal show={deleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
+  <h2 className="text-lg font-bold">Confirm Delete</h2>
+  <p>Are you sure you want to delete this customer?</p>
+  <button
+    onClick={handleConfirmDelete}
+    className="bg-red-500 text-white py-2  px-4 rounded mt-4"
+  >
+    Yes, Delete
+  </button>
+  <button
+    onClick={() => setDeleteModalOpen(false)}
+    className="bg-gray-500 text-white py-2 px-4 rounded mt-4 ml-2"
+  >
+    Cancel
+  </button>
+</Modal>
     </div>
   );
 }

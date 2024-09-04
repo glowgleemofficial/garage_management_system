@@ -7,6 +7,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
 import { saveAs } from 'file-saver';
 import Navigation from "./Navigation";
+import { MdDelete } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
+import Modal from "../Modal";
 
 function Employeetask() {
   const [dropdownOpen, setDropdownOpen] = useState(null);
@@ -16,6 +19,12 @@ function Employeetask() {
   const [salaryStatuses, setSalaryStatuses] = useState([null]); // Default value for salary statuses
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const [names, setNames] = useState([""]); // State for names
+
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [currentEmployee, setCurrentEmployee] = useState(null);
+  const [formData, setFormData] = useState({});
+
 
   const[alljobs,setalljobs]= useState([""]);
 
@@ -107,6 +116,57 @@ function Employeetask() {
     alldata();
   }, []);
 
+  const handleEdit = (customer) => {
+    setCurrentEmployee(customer);
+    setFormData(customer);
+    setEditModalOpen(true);
+  };
+
+  const handleDelete = (customer) => {
+    setCurrentEmployee(customer);
+    setDeleteModalOpen(true);
+  };
+  
+  const handleConfirmDelete = async () => {
+    try {
+      await fetch(`http://localhost:5000/employeesalary/delete/${currentEmployee.id}`, {
+        method: 'DELETE',
+      });
+      setDeleteModalOpen(false);
+      alldata();
+    } catch (error) {
+      console.error("Error deleting customer:", error);
+    }
+  
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+  const handleSubmitChange = async (e) => {
+    e.preventDefault();
+
+    try {
+      await fetch(`http://localhost:5000/employeesalary/update/${currentEmployee.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      setEditModalOpen(false);
+      alldata();
+    } catch (error) {
+      console.error("Error updating customer data:", error);
+    }
+  };
+
+
+
   return (
     <div className="bg-gray-100 h-screen flex">
       <aside className="w-64 bg-white text-white flex-shrink-0 fixed h-full">
@@ -151,6 +211,9 @@ function Employeetask() {
                   <th className="py-3 px-10 bg-gray-200 text-[#3d3d3d] text-center">Date</th>
                   <th className="py-3 px-4 bg-gray-200 text-[#3d3d3d] text-center">Salary</th>
                   <th className="py-3 px-12 bg-gray-200 text-[#3d3d3d] text-center">Salary Status</th>
+                  <th className="py-3 px-7 bg-gray-200 text-[#3d3d3d] text-center">
+Action
+</th>
                   {/* <th className="py-3 px-12 bg-gray-200 text-[#3d3d3d] text-center">Download Data</th> */}
                 </tr>
               </thead>
@@ -289,6 +352,22 @@ function Employeetask() {
       <td className="py-3 px-6 text-center text-xs">{job.date}</td>
       <td className="py-3 px-6 text-center text-xs">{job.salary}</td>
       <td className="py-3 px-6 text-center text-xs">{job.salary_status}</td>
+      <td className=" text-center text-xs">
+<button
+                           onClick={() => handleEdit(job)}
+
+                          className="text-blue-500  hover:text-blue-700"
+>
+  <FaRegEdit className="h-5 w-5" />
+</button>
+<button
+  onClick={() => handleDelete(job)}
+  className="text-black-500 hover:text-red-700 ml-2"
+>
+  <MdDelete className="h-5 w-6" />
+</button>
+</td>
+
       {/* <td className="py-3 px-6 text-center text-xs"> <button className='bg-[#ea8732] p-1 rounded-md text-white font-medium'   onClick={() => downloadExcel(job.id)}>
       Download Excel
     </button></td> */}
@@ -303,6 +382,8 @@ function Employeetask() {
       <td className="py-3 px-6 text-center text-xs"></td>
       <td className="py-3 px-6 text-center text-xs"></td>
       <td className="py-3 px-6 text-center text-xs"></td>
+      <td className="py-3 px-6 text-center text-xs"></td>
+
     </tr>
   ))}
 
@@ -313,6 +394,88 @@ function Employeetask() {
           </div>
         </div>
       </div>
+
+      {editModalOpen && (
+        <Modal show={editModalOpen} onClose={() => setEditModalOpen(false)}>
+          <div className="h-auto w-auto">
+            <h2 className="text-lg font-bold">Edit Employee Salary</h2>
+            <form onSubmit={handleSubmitChange}>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="mt-1 block p-2 h-8 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Job Title</label>
+                  <input
+                    type="text"
+                    name="job_title"
+                    value={formData.job_title}
+                    onChange={handleChange}
+                    className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Date</label>
+                  <input
+                    type="date"
+                    name="date"
+                    value={formData.date}
+                    onChange={handleChange}
+                    className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Salary</label>
+                  <input
+                    type="text"
+                    name="salary"
+                    value={formData.salary}
+                    onChange={handleChange}
+                    className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Salary Status</label>
+                  <input
+                    type="text"
+                    name="salary_status"
+                    value={formData.salary_status}
+                    onChange={handleChange}
+                    className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                 </div>
+              <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded mt-4">
+                Save Changes
+              </button>
+            </form>
+          </div>
+        </Modal>
+         )}
+<Modal show={deleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
+  <h2 className="text-lg font-bold">Confirm Delete</h2>
+  <p>Are you sure you want to delete this customer?</p>
+  <button
+    onClick={handleConfirmDelete}
+    className="bg-red-500 text-white py-2  px-4 rounded mt-4"
+  >
+    Yes, Delete
+  </button>
+  <button
+    onClick={() => setDeleteModalOpen(false)}
+    className="bg-gray-500 text-white py-2 px-4 rounded mt-4 ml-2"
+  >
+    Cancel
+  </button>
+</Modal>
+
     </div>
   );
 }

@@ -194,23 +194,23 @@ function Employeetask() {
   };
 
   // 
-  const handleSubmitChange = (e) => {
+  const handleSubmitChange = async (e) => {
     e.preventDefault();
-    // try {
-    //   await fetch(`http://localhost:5000/customer/update/${currentCustomer.id}`, {
-    //     method: "PUT",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(formData),
-    //   });
 
-    //   setEditModalOpen(false);
-    //   fetchData();
-    // } catch (error) {
-    //   console.error("Error updating customer data:", error);
-    // }
-  
+    try {
+      await fetch(`http://localhost:5000/customer/update/${currentCustomer.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      setEditModalOpen(false);
+      fetchData();
+    } catch (error) {
+      console.error("Error updating customer data:", error);
+    }
   };
 
   return (
@@ -305,7 +305,7 @@ function Employeetask() {
                     Customer
                   </th>
                   <th className="py-3 px-7 bg-gray-200 text-[#3d3d3d] text-center">
-                    Edit/Delete
+                    Action
                   </th>
 
                   {/* <th className="py-3 px-7 bg-gray-200 text-[#3d3d3d] text-center">Download data</th> */}
@@ -479,13 +479,13 @@ function Employeetask() {
                       // onClick={handleEdit(customer)}
                                                 className="text-blue-500  hover:text-blue-700"
                       >
-                        <FaRegEdit className="h-4 w-4" />
+                        <FaRegEdit className="h-5 w-5" />
                       </button>
                       <button
                         onClick={() => handleDelete(customer)}
-                        className="text-red-500 hover:text-red-700 ml-2"
+                        className="text-black-500 hover:text-red-700 ml-2"
                       >
-                        <MdDelete className="h-5 w-5" />
+                        <MdDelete className="h-5 w-6" />
                       </button>
                     </td>
 
@@ -575,7 +575,7 @@ function Employeetask() {
                             <input
                   type="text"
                   name="deal"
-                  value={formData.deal || ""}
+                  value={formData.deals || ""}
                   onChange={handleChange}
                   className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   />

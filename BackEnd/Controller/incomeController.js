@@ -69,4 +69,57 @@ exports.getdata = async (req, res) => {
 };
 
 
+exports.deletedata = async (req, res) => {
+    const id =req.params.id;
+    
+        connectDB.query('DELETE FROM income WHERE `id` = ?',id, (err,  fields) => {
+            if (err) {
+                // Handle the error and respond accordingly
+                console.error('Error executing query', err);
+                return res.status(500).json({
+                    "Message": "Internal Server Error"
+                });
+            }
+    
+            // Respond with the rows from the database
+            res.json({
+               'Message' : 'deleted sucessfully'
+            });
+        });
+    };
+    
+    exports.updatedata = async (req, res) => {
+        const id = req.params.id;
+        const { name, description, date, salary, salary_status} = req.body;
+    
+        const query = `
+            UPDATE income
+            SET name = ?,  description = ?, date = ?, salary = ?, salary_status = ? 
+            WHERE id = ?
+        `;
+        
+        connectDB.query(query, [name, description, date, salary, salary_status, id], (err, results) => {
+            if (err) {
+                console.error('Error executing query', err);
+                return res.status(500).json({
+                    "Message": "Internal Server Error"
+                });
+            }
+    
+            // Check if any rows were affected
+            if (results.affectedRows === 0) {
+                return res.status(404).json({
+                    "Message": "Customer not found"
+                });
+            }
+    
+            // Respond with a success message
+            res.json({
+                'Message': 'Updated successfully'
+            });
+        });
+    };
+    
+    
+    
 
