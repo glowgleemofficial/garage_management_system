@@ -10,6 +10,10 @@ import axios from 'axios';
 import { saveAs } from 'file-saver';
 import Navigation from "./Navigation";
 import moment from 'moment';
+import { MdDelete } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
+import Modal from "../Modal";
+
 
 function Employeetask() {
   const [dropdownOpen, setDropdownOpen] = useState(null);
@@ -24,7 +28,11 @@ function Employeetask() {
   const [taskData, setTaskData] = useState([]);
   const [time, setTime] = useState('');
   const [location, setlocation] = useState('');
-
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [currentInvoice, setCurrentInvoice] = useState(null);
+  const [formData, setFormData] = useState({});
+  
 
   const [filteredData, setFilteredData] = useState([]);
   const [timeFilter, setTimeFilter] = useState({ start: '', end: '' });
@@ -192,6 +200,55 @@ function Employeetask() {
 
     setFilteredData(data);
   };
+  const handleEdit = (invoice) => {
+    setCurrentInvoice(invoice);
+    setFormData(invoice);
+    setEditModalOpen(true);
+  };
+
+  const handleDelete = (invoice) => {
+    setCurrentInvoice(invoice);
+    setDeleteModalOpen(true);
+  };
+  
+  const handleConfirmDelete = async () => {
+    try {
+      await fetch(`http://localhost:5000/invoice/delete/${currentInvoice.id}`, {
+        method: 'DELETE',
+      });
+      setDeleteModalOpen(false);
+      fetchData();
+    } catch (error) {
+      console.error("Error deleting Invoice:", error);
+    }
+  
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+  const handleSubmitChange = async (e) => {
+    e.preventDefault();
+
+    try {
+      await fetch(`http://localhost:5000/invoice/update/${currentInvoice.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      setEditModalOpen(false);
+      fetchData();
+    } catch (error) {
+      console.error("Error updating customer data:", error);
+    }
+  };
+
 
 
   return (
@@ -277,6 +334,9 @@ function Employeetask() {
                   <th className="py-3 px-4 bg-gray-200 text-[#3d3d3d] text-center">Pending</th>
                   <th className="py-3 px-16 bg-gray-200 text-[#3d3d3d] text-center">Amount Status</th>
                   <th className="py-3 px-12 bg-gray-200 text-[#3d3d3d] text-center">Download Invoice</th>
+                  <th className="py-3 px-7 bg-gray-200 text-[#3d3d3d] text-center">
+Action
+</th>
                 </tr>
               </thead>
               <tbody>
@@ -459,6 +519,22 @@ function Employeetask() {
                     <td className="py-3 px-6 text-center text-xs"> <button className='bg-[#ea8732] p-1 rounded-md text-white font-medium' onClick={() => downloadExcel(invoice.id)}>
                       Download Invoice
                     </button></td>
+     <td className=" text-center text-xs">
+     <button
+                                onClick={() => handleEdit(invoice)}
+     
+                               className="text-blue-500  hover:text-blue-700"
+     >
+       <FaRegEdit className="h-5 w-5" />
+     </button>
+     <button
+       onClick={() => handleDelete(invoice)}
+       className="text-black-500 hover:text-red-700 ml-2"
+     >
+       <MdDelete className="h-5 w-6" />
+     </button>
+     </td>
+     
                   </tr>
                 ))}
                 {Array.from({ length: 20 }).map((_, index) => (
@@ -469,6 +545,8 @@ function Employeetask() {
                     <td className="py-3 px-6 text-center text-xs">&nbsp;</td>
                     <td className="py-3 px-6 text-center text-xs">&nbsp;</td>
                     <td className="py-3 px-6 text-center text-xs">&nbsp;</td>
+                    <td className="py-3 px-6 text-center text-xs">&nbsp;</td>
+                  
                   </tr>
                 ))}
 
@@ -478,6 +556,129 @@ function Employeetask() {
           </div>
         </div>
       </div>
+      {editModalOpen && (
+    <Modal   show={editModalOpen}  onClose={() => setEditModalOpen(false)}>
+ <div className="h-auto w-auto">
+ <h2 className="text-lg font-bold">Edit Invoice</h2>
+      <form onSubmit={handleSubmitChange}>
+      <div className="grid grid-cols-2 gap-4">
+<div>
+<label className="block text-sm font-medium text-gray-700">Name</label>
+<input
+            type="text"
+            name="name"
+            value={formData.name || ""}
+            onChange={handleChange}
+            className="mt-1 block p-2 h-8 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Vehicle</label>
+              <input
+            type="text"
+            name="vehicle"
+            value={formData.vehicle || ""}
+            onChange={handleChange}
+            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Description</label>
+                      <input
+            type="text"
+            name="description"
+            value={formData.description || ""}
+            onChange={handleChange}
+            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Date</label>
+                      <input
+            type="date"
+            name="date"
+            value={formData.date || ""}
+            onChange={handleChange}
+            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Location</label>
+                      <input
+            type="text"
+            name="Location"
+            value={formData.Location || ""}
+            onChange={handleChange}
+            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Time</label>
+                      <input
+            type="time"
+            name="time"
+            value={formData.time || ""}
+            onChange={handleChange}
+            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Advance</label>
+                     <input
+            type="text"
+            name="advance"
+            value={formData.advance || ""}
+            onChange={handleChange}
+            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Pending</label>
+                     <input
+            type="text"
+            name="pending"
+            value={formData.pending || ""}
+            onChange={handleChange}
+            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Project Status</label>
+                     <input
+            type="text"
+            name="project_status"
+            value={formData.project_status || ""}
+            onChange={handleChange}
+            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+        </div>
+        <button type="submit"   className="bg-blue-500 text-white py-2 px-4 rounded mt-4"
+>Save Changes</button>
+      </form>
+      </div>
+    </Modal>
+  )}
+
+<Modal show={deleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
+  <h2 className="text-lg font-bold">Confirm Delete</h2>
+  <p>Are you sure you want to delete this customer?</p>
+  <button
+    onClick={handleConfirmDelete}
+    className="bg-red-500 text-white py-2  px-4 rounded mt-4"
+  >
+    Yes, Delete
+  </button>
+  <button
+    onClick={() => setDeleteModalOpen(false)}
+    className="bg-gray-500 text-white py-2 px-4 rounded mt-4 ml-2"
+  >
+    Cancel
+  </button>
+</Modal>
+
     </div>
   );
 }
