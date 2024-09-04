@@ -94,7 +94,7 @@ exports.deletedata = async (req, res) => {
     
         const query = `
             UPDATE vehicles
-            SET name = ?, vehicle = ?, description = ?, date = ?, location = ?, charges = ?, 
+            SET name = ?, vehicle = ?, description = ?, date = ?, location = ?, charges = ? 
             WHERE id = ?
         `;
         
