@@ -569,7 +569,7 @@ Action
             <label className="block text-sm font-medium text-gray-700">Working Hour</label>
                       <input
             type="text"
-            name="work_hour"
+            name="work_hours"
             value={form.work_hours || ""}
             onChange={handleChange}
             className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
