@@ -28,11 +28,11 @@ function Employeetask() {
   const [searchCompany, setSearchCompany] = useState('');
 
 
-  
-const [editModalOpen, setEditModalOpen] = useState(false);
-const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-const [currentTask, setCurrentTask] = useState(null);
-const [form, setForm] = useState({});
+
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [currentTask, setCurrentTask] = useState(null);
+  const [form, setForm] = useState({});
 
   const [formData, setFormData] = useState({
     name: "",
@@ -66,7 +66,7 @@ const [form, setForm] = useState({});
     setTime(time24h);
     setFormData({ ...formData, time: time24h });
   };
- 
+
 
   const handleWorkHoursChange = (hours, index) => {
     const newWorkHours = [...workHours];
@@ -76,7 +76,7 @@ const [form, setForm] = useState({});
     setDropdownOpen(null); // Close dropdown after selection
   };
 
-  const format12 = (time24h) =>{
+  const format12 = (time24h) => {
     const formattedTime = moment(time24h, 'HH:mm:ss').format('h:mm A');
     return formattedTime;
   }
@@ -150,7 +150,7 @@ const [form, setForm] = useState({});
 
   useEffect(() => {
     filterData();
-  }, [timeFilter, searchName ,searchCompany]);
+  }, [timeFilter, searchName, searchCompany]);
 
 
   const resetFilters = () => {
@@ -166,9 +166,9 @@ const [form, setForm] = useState({});
 
     if (timeFilter.start && timeFilter.end) {
       data = data.filter(invoice => {
-      
+
         const invoiceTime = invoice.time;
-      
+
         const startTime = moment(timeFilter.start, 'h:mm A').format('HH:mm:ss');
         const endTime = moment(timeFilter.end, 'h:mm A').format('HH:mm:ss');
 
@@ -191,55 +191,55 @@ const [form, setForm] = useState({});
   };
 
 
-  
-const handleEdit = (Task) => {
-  setCurrentTask(Task);
-  setForm(Task);
-  setEditModalOpen(true);
-};
 
-const handleDelete = (Task) => {
-  setCurrentTask(Task);
-  setDeleteModalOpen(true);
-};
+  const handleEdit = (Task) => {
+    setCurrentTask(Task);
+    setForm(Task);
+    setEditModalOpen(true);
+  };
 
-const handleConfirmDelete = async () => {
-  try {
-    await fetch(`http://localhost:5000/employeetask/delete/${currentTask.id}`, {
-      method: 'DELETE',
-    });
-    setDeleteModalOpen(false);
-    fetchData();
-  } catch (error) {
-    console.error("Error deleting customer:", error);
-  }
+  const handleDelete = (Task) => {
+    setCurrentTask(Task);
+    setDeleteModalOpen(true);
+  };
 
-};
-const handleChange = (e) => {
-  const { name, value } = e.target;
-  setForm((prevData) => ({
-    ...prevData,
-    [name]: value
-  }));
-};
-const handleSubmitChange = async (e) => {
-  e.preventDefault();
+  const handleConfirmDelete = async () => {
+    try {
+      await fetch(`http://localhost:5000/employeetask/delete/${currentTask.id}`, {
+        method: 'DELETE',
+      });
+      setDeleteModalOpen(false);
+      fetchData();
+    } catch (error) {
+      console.error("Error deleting customer:", error);
+    }
 
-  try {
-    await fetch(`http://localhost:5000/employeetask/update/${currentTask.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    });
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+  const handleSubmitChange = async (e) => {
+    e.preventDefault();
 
-    setEditModalOpen(false);
-    fetchData();
-  } catch (error) {
-    console.error("Error updating customer data:", error);
-  }
-};
+    try {
+      await fetch(`http://localhost:5000/employeetask/update/${currentTask.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      setEditModalOpen(false);
+      fetchData();
+    } catch (error) {
+      console.error("Error updating customer data:", error);
+    }
+  };
 
 
   return (
@@ -260,7 +260,7 @@ const handleSubmitChange = async (e) => {
             <h2 className="text-xl font-bold text-[#3d3d3d]">Employee Task</h2>
             <div className="flex items-center space-x-4">
               <div className="flex-1 flex justify-center ml-60">
-               
+
               </div>
               <div className="w-8 h-8 cursor-pointer hover:bg-gray-200 rounded-full">
                 <img src={Notification} alt="Notification Icon" />
@@ -290,7 +290,7 @@ const handleSubmitChange = async (e) => {
               onChange={(e) => setTimeFilter({ ...timeFilter, end: e.target.value })}
               placeholder="End Time"
             />
-            
+
             <input
               type="text"
               className="w-1/1 px-3 py-1 border rounded shadow-sm text-xs mx-4"
@@ -325,8 +325,8 @@ const handleSubmitChange = async (e) => {
                   <th className="py-3 px-16 bg-gray-200 text-[#3d3d3d] text-center">Time</th>
                   <th className="py-3 px-6 bg-gray-200 text-[#3d3d3d] text-center">Changes</th>
                   <th className="py-3 px-7 bg-gray-200 text-[#3d3d3d] text-center">
-Action
-</th>
+                    Action
+                  </th>
                   {/* <th className="py-3 px-12 bg-gray-200 text-[#3d3d3d] text-center">Download Data</th> */}
                 </tr>
               </thead>
@@ -479,20 +479,20 @@ Action
                     <td className="py-3 px-6 text-center text-xs">{format12(task.time)}</td>
                     <td className="py-3 px-6 text-center text-xs">{task.task_status}</td>
                     <td className=" text-center text-xs">
-<button
-                           onClick={() => handleEdit(task)}
+                      <button
+                        onClick={() => handleEdit(task)}
 
-                          className="text-blue-500  hover:text-blue-700"
->
-  <FaRegEdit className="h-5 w-5" />
-</button>
-<button
-  onClick={() => handleDelete(task)}
-  className="text-black-500 hover:text-red-700 ml-2"
->
-  <MdDelete className="h-5 w-6" />
-</button>
-</td>
+                        className="text-blue-500  hover:text-blue-700"
+                      >
+                        <FaRegEdit className="h-5 w-5" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(task)}
+                        className="text-black-500 hover:text-red-700 ml-2"
+                      >
+                        <MdDelete className="h-5 w-6" />
+                      </button>
+                    </td>
 
                     {/* <td className="py-3 px-6 text-center text-xs"> <button className='bg-[#ea8732] p-1 rounded-md text-white font-medium'   onClick={() => downloadExcel(task.id)}>
       Download Excel
@@ -510,7 +510,7 @@ Action
                     <td className="py-3 px-6 text-center text-xs">&nbsp;</td>
                     <td className="py-3 px-6 text-center text-xs">&nbsp;</td>
                     <td className="py-3 px-6 text-center text-xs">&nbsp;</td>
-                  
+
                   </tr>
                 ))}
               </tbody>
@@ -520,116 +520,124 @@ Action
         </div>
       </div>
       {editModalOpen && (
-    <Modal   show={editModalOpen}  onClose={() => setEditModalOpen(false)}>
- <div className="h-auto w-auto">
- <h2 className="text-lg font-bold">Edit Task</h2>
-      <form onSubmit={handleSubmitChange}>
-      <div className="grid grid-cols-2 gap-4">
-<div>
-<label className="block text-sm font-medium text-gray-700">Name</label>
-<input
-            type="text"
-            name="name"
-            value={form.name || ""}
-            onChange={handleChange}
-            className="mt-1 block p-2 h-8 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Company</label>
-              <input
-            type="text"
-            name="company"
-            value={form.company || ""}
-            onChange={handleChange}
-            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Location</label>
-                      <input
-            type="text"
-            name="location"
-            value={form.location || ""}
-            onChange={handleChange}
-            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Task</label>
-                      <input
-            type="text"
-            name="task"
-            value={form.task || ""}
-            onChange={handleChange}
-            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Working Hour</label>
-                      <input
-            type="text"
-            name="work_hour"
-            value={form.work_hours || ""}
-            onChange={handleChange}
-            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-          </div>
-          <div>
-  <label className="block text-sm font-medium text-gray-700">Date</label>
-  <input
-    type="date"
-    name="date"
-    value={form.date|| ""}
-    onChange={handleChange}
-    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-  />
-</div>
-<div>
-  <label className="block text-sm font-medium text-gray-700">Time</label>
-  <input
-    type="time"
-    name="time"
-    value={form.time || ""}
-    onChange={handleChange}
-    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-  />
-</div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Task Status</label>
-                     <input
-            type="text"
-            name="task_status"
-            value={form.task_status || ""}
-            onChange={handleChange}
-            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-          </div>
-        
-        </div>
-        <button type="submit"   className="bg-blue-500 text-white py-2 px-4 rounded mt-4"
->Save Changes</button>
-      </form>
-      </div>
-    </Modal>
-  )}
+        <Modal show={editModalOpen} onClose={() => setEditModalOpen(false)}>
+          <div className="h-auto w-auto">
+            <h2 className="text-lg font-bold">Edit Task</h2>
+            <form onSubmit={handleSubmitChange}>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    value={form.name || ""}
+                    onChange={handleChange}
+                    className="mt-1 block p-2 h-8 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Company</label>
+                  <input
+                    type="text"
+                    name="company"
+                    required
+                    value={form.company || ""}
+                    onChange={handleChange}
+                    className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Location</label>
+                  <input
+                    type="text"
+                    name="location"
+                    required
+                    value={form.location || ""}
+                    onChange={handleChange}
+                    className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Task</label>
+                  <input
+                    type="text"
+                    name="task"
+                    required
+                    value={form.task || ""}
+                    onChange={handleChange}
+                    className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Working Hour</label>
+                  <input
+                    type="text"
+                    name="work_hour"
+                    value={form.work_hours}
+                    onChange={handleChange}
+                    className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Date</label>
+                  <input
+                    type="date"
+                    name="date"
+                    value={form.date || ""}
+                    onChange={handleChange}
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Time</label>
+                  <input
+                    type="time"
+                    name="time"
+                    value={form.time || ""}
+                    onChange={handleChange}
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+            
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Salary Status</label>
+                  <select
+                    name="task_status"
+                    value={formData.task_status}
+                    onChange={handleChange}
+                    className="mt-1 block h-8  w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="">Select  Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Completed">Completed</option>
+                  </select>
+                </div>
 
-<Modal show={deleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
-  <h2 className="text-lg font-bold">Confirm Delete</h2>
-  <p>Are you sure you want to delete this customer?</p>
-  <button
-    onClick={handleConfirmDelete}
-    className="bg-red-500 text-white py-2  px-4 rounded mt-4"
-  >
-    Yes, Delete
-  </button>
-  <button
-    onClick={() => setDeleteModalOpen(false)}
-    className="bg-gray-500 text-white py-2 px-4 rounded mt-4 ml-2"
-  >
-    Cancel
-  </button>
-</Modal>
+              </div>
+              <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded mt-4"
+              >Save Changes</button>
+            </form>
+          </div>
+        </Modal>
+      )}
+
+      <Modal show={deleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
+        <h2 className="text-lg font-bold">Confirm Delete</h2>
+        <p>Are you sure you want to delete this customer?</p>
+        <button
+          onClick={handleConfirmDelete}
+          className="bg-red-500 text-white py-2  px-4 rounded mt-4"
+        >
+          Yes, Delete
+        </button>
+        <button
+          onClick={() => setDeleteModalOpen(false)}
+          className="bg-gray-500 text-white py-2 px-4 rounded mt-4 ml-2"
+        >
+          Cancel
+        </button>
+      </Modal>
 
     </div>
   );

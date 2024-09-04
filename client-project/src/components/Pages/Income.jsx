@@ -31,8 +31,8 @@ function Employeetask() {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [currentIncome, setCurrentIncome] = useState(null);
   const [formData, setFormData] = useState({});
-  
-  
+
+
 
 
   const toggleDropdown = (index) => {
@@ -164,7 +164,7 @@ function Employeetask() {
     setCurrentIncome(income);
     setDeleteModalOpen(true);
   };
-  
+
   const handleConfirmDelete = async () => {
     try {
       await fetch(`http://localhost:5000/income/delete/${currentIncome.id}`, {
@@ -175,7 +175,7 @@ function Employeetask() {
     } catch (error) {
       console.error("Error deleting Income:", error);
     }
-  
+
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -215,14 +215,14 @@ function Employeetask() {
             src={Logo}
             alt="Logo"
           />
-          <Navigation/>
+          <Navigation />
         </div>
       </aside>
       <div className="flex-1 flex flex-col ml-64">
         <header className="bg-white shadow p-7 flex items-center">
           <h2 className="text-xl font-bold text-[#3d3d3d] flex-1">Income</h2>
           <div className="flex-1 flex justify-center ml-60">
-          
+
           </div>
           <div className="w-8 h-8 cursor-pointer hover:red-300">
             <img src={Notification} alt="icon" />
@@ -273,8 +273,8 @@ function Employeetask() {
                   <th className="py-3 px-4 bg-gray-200 text-[#3d3d3d] text-center">Amount</th>
                   <th className="py-3 px-12 bg-gray-200 text-[#3d3d3d] text-center">Amount Status</th>
                   <th className="py-3 px-7 bg-gray-200 text-[#3d3d3d] text-center">
-Action
-</th>
+                    Action
+                  </th>
                   {/* <th className="py-3 px-12 bg-gray-200 text-[#3d3d3d] text-center">Download Data</th> */}
                 </tr>
               </thead>
@@ -376,22 +376,22 @@ Action
                     <td className="py-3 px-6 text-center text-xs">{task.date}</td>
                     <td className="py-3 px-6 text-center text-xs">{task.salary}</td>
                     <td className="py-3 px-6 text-center text-xs">{task.salary_status}</td>
-     
-                    <td className=" text-center text-xs">
-<button
-                           onClick={() => handleEdit(task)}
 
-                          className="text-blue-500  hover:text-blue-700"
->
-  <FaRegEdit className="h-5 w-5" />
-</button>
-<button
-  onClick={() => handleDelete(task)}
-  className="text-black-500 hover:text-red-700 ml-2"
->
-  <MdDelete className="h-5 w-6" />
-</button>
-</td>
+                    <td className=" text-center text-xs">
+                      <button
+                        onClick={() => handleEdit(task)}
+
+                        className="text-blue-500  hover:text-blue-700"
+                      >
+                        <FaRegEdit className="h-5 w-5" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(task)}
+                        className="text-black-500 hover:text-red-700 ml-2"
+                      >
+                        <MdDelete className="h-5 w-6" />
+                      </button>
+                    </td>
                     {/* <td className="py-3 px-6 text-center text-xs"> <button className='bg-[#ea8732] p-1 rounded-md text-white font-medium'   onClick={() => downloadExcel(task.id)}>
       Download Excel
     </button></td> */}
@@ -415,36 +415,36 @@ Action
           </div>
         </div>
         <div className="bg-white shadow flex items-center justify-center ">
-        <  BarChart chartData={chartData} chartLabels={chartLabels} />
+          <  BarChart chartData={chartData} chartLabels={chartLabels} />
         </div>
       </div>
       {editModalOpen && (
-    <Modal   show={editModalOpen}  onClose={() => setEditModalOpen(false)}>
- <div className="h-auto w-auto">
- <h2 className="text-lg font-bold">Edit Customer</h2>
-      <form onSubmit={handleSubmitChange}>
-      <div className="grid grid-cols-2 gap-4">
-<div>
-<label className="block text-sm font-medium text-gray-700">Name</label>
-<input
-            type="text"
-            name="name"
-            value={formData.name || ""}
-            onChange={handleChange}
-            className="mt-1 block p-2 h-8 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Description</label>
-                      <input
-            type="text"
-            name="description"
-            value={formData.description || ""}
-            onChange={handleChange}
-            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-          </div>
-          <div>
+        <Modal show={editModalOpen} onClose={() => setEditModalOpen(false)}>
+          <div className="h-auto w-auto">
+            <h2 className="text-lg font-bold">Edit Customer</h2>
+            <form onSubmit={handleSubmitChange}>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name || ""}
+                    onChange={handleChange}
+                    className="mt-1 block p-2 h-8 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Description</label>
+                  <input
+                    type="text"
+                    name="description"
+                    value={formData.description || ""}
+                    onChange={handleChange}
+                    className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
                   <label className="block text-sm font-medium text-gray-700">Date</label>
                   <input
                     type="date"
@@ -454,50 +454,54 @@ Action
                     className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   />
                 </div>
-                 <div>
-            <label className="block text-sm font-medium text-gray-700">Salary</label>
-                      <input
-            type="text"
-            name="salary"
-            value={formData.salary || ""}
-            onChange={handleChange}
-            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Salary</label>
+                  <input
+                    type="text"
+                    name="salary"
+                    value={formData.salary || ""}
+                    onChange={handleChange}
+                    className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Salary Status</label>
+                  <select
+                    name="salary_status"
+                    value={formData.salary_status}
+                    required
+                    onChange={handleChange}
+                    className="mt-1 block h-8  w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="">Select Salary Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Paid">Paid</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded mt-4"
+              >Save Changes</button>
+            </form>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Salary Status</label>
-                      <input
-            type="text"
-            name="salary_status"
-            value={formData.salary_status || ""}
-            onChange={handleChange}
-            className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-          </div>
-        </div>
-        <button type="submit"   className="bg-blue-500 text-white py-2 px-4 rounded mt-4"
->Save Changes</button>
-      </form>
-      </div>
-    </Modal>
-  )}
+        </Modal>
+      )}
 
-<Modal show={deleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
-  <h2 className="text-lg font-bold">Confirm Delete</h2>
-  <p>Are you sure you want to delete this customer?</p>
-  <button
-    onClick={handleConfirmDelete}
-    className="bg-red-500 text-white py-2  px-4 rounded mt-4"
-  >
-    Yes, Delete
-  </button>
-  <button
-    onClick={() => setDeleteModalOpen(false)}
-    className="bg-gray-500 text-white py-2 px-4 rounded mt-4 ml-2"
-  >
-    Cancel
-  </button>
-</Modal>
+      <Modal show={deleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
+        <h2 className="text-lg font-bold">Confirm Delete</h2>
+        <p>Are you sure you want to delete this customer?</p>
+        <button
+          onClick={handleConfirmDelete}
+          className="bg-red-500 text-white py-2  px-4 rounded mt-4"
+        >
+          Yes, Delete
+        </button>
+        <button
+          onClick={() => setDeleteModalOpen(false)}
+          className="bg-gray-500 text-white py-2 px-4 rounded mt-4 ml-2"
+        >
+          Cancel
+        </button>
+      </Modal>
 
 
 
