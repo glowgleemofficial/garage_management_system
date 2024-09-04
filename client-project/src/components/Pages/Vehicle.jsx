@@ -367,6 +367,7 @@ function Employeetask() {
                   <input
                     type="text"
                     name="name"
+                    required
                     value={formData.name || ""}
                     onChange={handleChange}
                     className="mt-1 block p-2 h-8 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -374,30 +375,21 @@ function Employeetask() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Vehicle</label>
-                  <select
+                  <input
+                    type="text"
                     name="vehicle"
+                    required
                     value={formData.vehicle || ""}
                     onChange={handleChange}
                     className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  >
-                    <option value="">Select a vehicle</option>
-                    <option value="Crane: 25-Ton">Crane: 25-Ton</option>
-                    <option value="Crane: 50-Ton">Crane: 50-Ton</option>
-                    <option value="Crane: 70-Ton">Crane: 70-Ton</option>
-                    <option value="Crane: 100-Ton">Crane: 100-Ton</option>
-                    <option value="Forklift: 3-Ton">Forklift: 3-Ton</option>
-                    <option value="Forklift: 5-Ton">Forklift: 5-Ton</option>
-                    <option value="Forklift: 7-Ton">Forklift: 7-Ton</option>
-                    <option value="Forklift: 10-Ton">Forklift: 10-Ton</option>
-                    <option value="Boomloader: 523">Boomloader: 523</option>
-                    <option value="Boomloader: 540">Boomloader: 540</option>
-                  </select>
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Description</label>
                   <input
                     type="text"
                     name="description"
+                    required
                     value={formData.description || ""}
                     onChange={handleChange}
                     className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -418,6 +410,7 @@ function Employeetask() {
                   <input
                     type="text"
                     name="location"
+                    required
                     value={formData.location || ""}
                     onChange={handleChange}
                     className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -428,6 +421,7 @@ function Employeetask() {
                   <input
                     type="text"
                     name="charges"
+                    required
                     value={formData.charges || ""}
                     onChange={handleChange}
                     className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
