@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import Logo from "../Pages/images/logo.jpeg";
 import Notification from "../Pages/images/Notification.png";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import axios from 'axios';
-import { saveAs } from 'file-saver';
-import Navigation from './Navigation';
+import axios from "axios";
+import { saveAs } from "file-saver";
+import Navigation from "./Navigation";
+import { MdDelete } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
+import Modal from "../Modal";
 
 function Employeetask() {
   const [dropdownOpen, setDropdownOpen] = useState(null);
@@ -19,9 +22,14 @@ function Employeetask() {
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const [taskData, setTaskData] = useState([]);
 
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [currentCustomer, setCurrentCustomer] = useState(null);
+  const [formData, setFormData] = useState({});
+
   const [filteredData, setFilteredData] = useState([]);
-  const [dateFilter, setDateFilter] = useState({ start: '', end: '' });
-  const [searchName, setSearchName] = useState('');
+  const [dateFilter, setDateFilter] = useState({ start: "", end: "" });
+  const [searchName, setSearchName] = useState("");
 
   const toggleDropdown = (index) => {
     setDropdownOpen(dropdownOpen === index ? null : index);
@@ -55,15 +63,19 @@ function Employeetask() {
     setDropdownOpen(null); // Close dropdown after selection
   };
 
-
   const downloadExcel = (id) => {
-    axios.get(`http://localhost:5000/customer/getexcelcustomer/${id}`, { responseType: 'blob' })
+    axios
+      .get(`http://localhost:5000/customer/getexcelcustomer/${id}`, {
+        responseType: "blob",
+      })
       .then((response) => {
-        const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        saveAs(blob, 'data.xlsx');
+        const blob = new Blob([response.data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        saveAs(blob, "data.xlsx");
       })
       .catch((error) => {
-        console.error('There was an error downloading the Excel file!', error);
+        console.error("There was an error downloading the Excel file!", error);
       });
   };
 
@@ -85,13 +97,16 @@ function Employeetask() {
     };
 
     try {
-      const result = await fetch("http://localhost:5000/customer/post/E-customer", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const result = await fetch(
+        "http://localhost:5000/customer/post/E-customer",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       fetchData();
 
@@ -103,7 +118,9 @@ function Employeetask() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://localhost:5000/customer/get/E-customer");
+      const response = await fetch(
+        "http://localhost:5000/customer/get/E-customer"
+      );
       const data = await response.json();
       setTaskData(data.rows);
       setFilteredData(data.rows);
@@ -116,16 +133,13 @@ function Employeetask() {
     fetchData();
   }, []);
 
-
   useEffect(() => {
     filterData();
   }, [dateFilter, searchName]);
 
-
   const resetFilters = () => {
-
-    setDateFilter({ start: '', end: '' });
-    setSearchName('');
+    setDateFilter({ start: "", end: "" });
+    setSearchName("");
     setFilteredData(taskData); // Reset to original data
   };
 
@@ -133,13 +147,14 @@ function Employeetask() {
     let data = taskData;
 
     if (dateFilter.start && dateFilter.end) {
-      data = data.filter(invoice =>
-        invoice.date >= dateFilter.start && invoice.date <= dateFilter.end
+      data = data.filter(
+        (invoice) =>
+          invoice.date >= dateFilter.start && invoice.date <= dateFilter.end
       );
     }
 
     if (searchName) {
-      data = data.filter(invoice =>
+      data = data.filter((invoice) =>
         invoice.name.toLowerCase().includes(searchName.toLowerCase())
       );
     }
@@ -147,6 +162,56 @@ function Employeetask() {
     setFilteredData(data);
   };
 
+  const handleEdit = (customer) => {
+    setCurrentCustomer(customer);
+    setFormData(customer);
+    setEditModalOpen(true);
+  };
+
+  const handleDelete = (customer) => {
+    setCurrentCustomer(customer);
+    setDeleteModalOpen(true);
+  };
+  
+  const handleConfirmDelete = async () => {
+    try {
+      await fetch(`http://localhost:5000/customer/delete/${currentCustomer.id}`, {
+        method: 'DELETE',
+      });
+      setDeleteModalOpen(false);
+      fetchData();
+    } catch (error) {
+      console.error("Error deleting customer:", error);
+    }
+  
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+
+  // 
+  const handleSubmitChange = (e) => {
+    e.preventDefault();
+    // try {
+    //   await fetch(`http://localhost:5000/customer/update/${currentCustomer.id}`, {
+    //     method: "PUT",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(formData),
+    //   });
+
+    //   setEditModalOpen(false);
+    //   fetchData();
+    // } catch (error) {
+    //   console.error("Error updating customer data:", error);
+    // }
+  
+  };
 
   return (
     <div className="bg-gray-100 h-screen flex">
@@ -171,25 +236,31 @@ function Employeetask() {
           <div className="w-8 h-8 cursor-pointer hover:red-300">
             <img src={Notification} alt="icon" />
           </div>
-          <button className="text-[#FFFF] bg-[#ea8732] ml-9 mr-9 border-0 py-1 px-2 w-28 focus:outline-none hover:bg-gray-200 rounded font-semibold text-sm" onClick={handleSubmit}>
+          <button
+            className="text-[#FFFF] bg-[#ea8732] ml-9 mr-9 border-0 py-1 px-2 w-28 focus:outline-none hover:bg-gray-200 rounded font-semibold text-sm"
+            onClick={handleSubmit}
+          >
             Submit
           </button>
         </header>
         <div className="bg-white shadow p-10 flex items-center justify-center ">
           <div className="filters">
-
             <input
               type="date"
               className="w-1/1 px-3 py-1 border rounded shadow-sm text-xs mx-4"
               value={dateFilter.start}
-              onChange={(e) => setDateFilter({ ...dateFilter, start: e.target.value })}
+              onChange={(e) =>
+                setDateFilter({ ...dateFilter, start: e.target.value })
+              }
               placeholder="Start Date"
             />
             <input
               type="date"
               className="w-1/1 px-3 py-1 border rounded shadow-sm text-xs mx-4"
               value={dateFilter.end}
-              onChange={(e) => setDateFilter({ ...dateFilter, end: e.target.value })}
+              onChange={(e) =>
+                setDateFilter({ ...dateFilter, end: e.target.value })
+              }
               placeholder="End Date"
             />
             <input
@@ -199,7 +270,10 @@ function Employeetask() {
               onChange={(e) => setSearchName(e.target.value)}
               placeholder="Search Customer"
             />
-            <button onClick={resetFilters} className="bg-[#ea8732] text-white px-6 py-1 rounded-md">
+            <button
+              onClick={resetFilters}
+              className="bg-[#ea8732] text-white px-6 py-1 rounded-md"
+            >
               Reset
             </button>
           </div>
@@ -209,13 +283,31 @@ function Employeetask() {
             <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
               <thead>
                 <tr>
-                  <th className="py-3 px-16 bg-gray-200 text-[#3d3d3d] text-left">Name</th>
-                  <th className="py-3 px-16 bg-gray-200 text-[#3d3d3d] text-center">Vehicle</th>
-                  <th className="py-3 px-7 bg-gray-200 text-[#3d3d3d] text-center">Description</th>
-                  <th className="py-3 px-16 bg-gray-200 text-[#3d3d3d] text-center">Date</th>
-                  <th className="py-3 px-8 bg-gray-200 text-[#3d3d3d] text-center">Contact</th>
-                  <th className="py-3 px-7 bg-gray-200 text-[#3d3d3d] text-center">Amount</th>
-                  <th className="py-3 px-7 bg-gray-200 text-[#3d3d3d] text-center">Customer</th>
+                  <th className="py-3 px-16 bg-gray-200 text-[#3d3d3d] text-left">
+                    Name
+                  </th>
+                  <th className="py-3 px-16 bg-gray-200 text-[#3d3d3d] text-center">
+                    Vehicle
+                  </th>
+                  <th className="py-3 px-7 bg-gray-200 text-[#3d3d3d] text-center">
+                    Description
+                  </th>
+                  <th className="py-3 px-16 bg-gray-200 text-[#3d3d3d] text-center">
+                    Date
+                  </th>
+                  <th className="py-3 px-8 bg-gray-200 text-[#3d3d3d] text-center">
+                    Contact
+                  </th>
+                  <th className="py-3 px-7 bg-gray-200 text-[#3d3d3d] text-center">
+                    Amount
+                  </th>
+                  <th className="py-3 px-7 bg-gray-200 text-[#3d3d3d] text-center">
+                    Customer
+                  </th>
+                  <th className="py-3 px-7 bg-gray-200 text-[#3d3d3d] text-center">
+                    Edit/Delete
+                  </th>
+
                   {/* <th className="py-3 px-7 bg-gray-200 text-[#3d3d3d] text-center">Download data</th> */}
                 </tr>
               </thead>
@@ -258,7 +350,9 @@ function Employeetask() {
                               <li
                                 key={index}
                                 className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                                onClick={() => handleDropdownChange(vehicle, 0, "vehicle")}
+                                onClick={() =>
+                                  handleDropdownChange(vehicle, 0, "vehicle")
+                                }
                               >
                                 {vehicle}
                               </li>
@@ -292,7 +386,9 @@ function Employeetask() {
                       className="w-full py-1 px-2 border rounded"
                       placeholder="Enter Contact"
                       value={contacts[0] || ""}
-                      onChange={(e) => handleDropdownChange(e.target.value, 0, "contact")}
+                      onChange={(e) =>
+                        handleDropdownChange(e.target.value, 0, "contact")
+                      }
                     />
                   </td>
                   <td className="py-3 px-4 text-center text-xs">
@@ -311,7 +407,9 @@ function Employeetask() {
                               <li
                                 key={index}
                                 className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                                onClick={() => handleDropdownChange(deal, 0, "deal")}
+                                onClick={() =>
+                                  handleDropdownChange(deal, 0, "deal")
+                                }
                               >
                                 {deal}
                               </li>
@@ -337,7 +435,9 @@ function Employeetask() {
                               <li
                                 key={index}
                                 className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                                onClick={() => handleDropdownChange(customer, 0, "customer")}
+                                onClick={() =>
+                                  handleDropdownChange(customer, 0, "customer")
+                                }
                               >
                                 {customer}
                               </li>
@@ -352,13 +452,43 @@ function Employeetask() {
                 {/* Render rows based on taskData */}
                 {filteredData.map((customer, index) => (
                   <tr key={index} className="border-t">
-                    <td className="py-3 px-6 text-left text-xs">{customer.name}</td>
-                    <td className="py-3 px-6 text-center text-xs">{customer.vehicle}</td>
-                    <td className="py-3 px-6 text-center text-xs">{customer.description}</td>
-                    <td className="py-3 px-6 text-center text-xs">{customer.date}</td>
-                    <td className="py-3 px-6 text-center text-xs">{customer.contact}</td>
-                    <td className="py-3 px-6 text-center text-xs">{customer.deals}</td>
-                    <td className="py-3 px-6 text-center text-xs">{customer.customer}</td>
+                    <td className="py-3 px-6 text-left text-xs">
+                      {customer.name}
+                    </td>
+                    <td className="py-3 px-6 text-center text-xs">
+                      {customer.vehicle}
+                    </td>
+                    <td className="py-3 px-6 text-center text-xs">
+                      {customer.description}
+                    </td>
+                    <td className="py-3 px-6 text-center text-xs">
+                      {customer.date}
+                    </td>
+                    <td className="py-3 px-6 text-center text-xs">
+                      {customer.contact}
+                    </td>
+                    <td className="py-3 px-6 text-center text-xs">
+                      {customer.deals}
+                    </td>
+                    <td className="py-3 px-6 text-center text-xs">
+                      {customer.customer}
+                    </td>
+                    <td className=" text-center text-xs">
+                      <button
+                                                 onClick={() => handleEdit(customer)}
+                      // onClick={handleEdit(customer)}
+                                                className="text-blue-500  hover:text-blue-700"
+                      >
+                        <FaRegEdit className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(customer)}
+                        className="text-red-500 hover:text-red-700 ml-2"
+                      >
+                        <MdDelete className="h-5 w-5" />
+                      </button>
+                    </td>
+
                     {/* <td className="py-3 px-6 text-center text-xs"> <button className='bg-[#ea8732] p-1 rounded-md text-white font-medium'   onClick={() => downloadExcel(customer.id)}>
       Download Excel
     </button></td> */}
@@ -375,14 +505,115 @@ function Employeetask() {
                     <td className="py-3 px-6 text-center text-xs"></td>
                     <td className="py-3 px-6 text-center text-xs"></td>
                     <td className="py-3 px-6 text-center text-xs"></td>
+                    <td className="py-3 px-6 text-center text-xs"></td>
                   </tr>
                 ))}
               </tbody>
-
             </table>
           </div>
         </div>
       </div>
+
+      {editModalOpen && (
+          <Modal   show={editModalOpen}  onClose={() => setEditModalOpen(false)}>
+       <div className="h-auto w-auto">
+       <h2 className="text-lg font-bold">Edit Customer</h2>
+            <form onSubmit={handleSubmitChange}>
+            <div className="grid grid-cols-2 gap-4">
+    <div>
+      <label className="block text-sm font-medium text-gray-700">Name</label>
+      <input
+                  type="text"
+                  name="name"
+                  value={formData.name || ""}
+                  onChange={handleChange}
+                  className="mt-1 block p-2 h-8 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Vehicle</label>
+                    <input
+                  type="text"
+                  name="vehicle"
+                  value={formData.vehicle || ""}
+                  onChange={handleChange}
+                  className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Description</label>
+                            <input
+                  type="text"
+                  name="description"
+                  value={formData.description || ""}
+                  onChange={handleChange}
+                  className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Date</label>
+                            <input
+                  type="date"
+                  name="date"
+                  value={formData.date || ""}
+                  onChange={handleChange}
+                  className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Contact</label>
+                            <input
+                  type="text"
+                  name="contact"
+                  value={formData.contact || ""}
+                  onChange={handleChange}
+                  className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Deals</label>
+                            <input
+                  type="text"
+                  name="deal"
+                  value={formData.deal || ""}
+                  onChange={handleChange}
+                  className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Customer</label>
+                           <input
+                  type="text"
+                  name="customer"
+                  value={formData.customer || ""}
+                  onChange={handleChange}
+                  className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+              <button type="submit"   className="bg-blue-500 text-white py-2 px-4 rounded mt-4"
+  >Save Changes</button>
+            </form>
+            </div>
+          </Modal>
+        )}
+     
+      <Modal show={deleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
+        <h2 className="text-lg font-bold">Confirm Delete</h2>
+        <p>Are you sure you want to delete this customer?</p>
+        <button
+          onClick={handleConfirmDelete}
+          className="bg-red-500 text-white py-2  px-4 rounded mt-4"
+        >
+          Yes, Delete
+        </button>
+        <button
+          onClick={() => setDeleteModalOpen(false)}
+          className="bg-gray-500 text-white py-2 px-4 rounded mt-4 ml-2"
+        >
+          Cancel
+        </button>
+      </Modal>
     </div>
   );
 }
