@@ -428,6 +428,7 @@ function Employeetask() {
                   <label className="block text-sm font-medium text-gray-700">Name</label>
                   <input
                     type="text"
+                    required
                     name="name"
                     value={formData.name || ""}
                     onChange={handleChange}
@@ -439,6 +440,7 @@ function Employeetask() {
                   <input
                     type="text"
                     name="description"
+                    required
                     value={formData.description || ""}
                     onChange={handleChange}
                     className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -459,6 +461,7 @@ function Employeetask() {
                   <input
                     type="text"
                     name="salary"
+                    required
                     value={formData.salary || ""}
                     onChange={handleChange}
                     className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"

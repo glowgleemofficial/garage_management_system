@@ -314,7 +314,8 @@ Action
           </svg>
         </button>
         {dropdownOpen === 0 && (
-          <div className="absolute mt-2 w-full py-1 bg-white border border-gray-300 rounded shadow-lg">
+    
+    <div className="absolute mt-2 w-full py-1 bg-white border border-gray-300 rounded shadow-lg">
             {[
               "Crane: 25-Ton",
               "Crane: 50-Ton",
@@ -480,24 +481,48 @@ Action
             type="text"
             name="name"
             value={formData.name || ""}
+            required
             onChange={handleChange}
             className="mt-1 block p-2 h-8 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Vehicle</label>
-              <input
+              {/* <input
             type="text"
             name="vehicle"
+            required
             value={formData.vehicle || ""}
             onChange={handleChange}
             className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
+            /> */}
+            
+<select
+            name="vehicle"
+            required
+            value={formData.vehicle || ""}
+            onChange={handleChange}
+                    className="mt-1 block h-8  w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="">Select vehicle</option>
+                    <option value="Crane: 50-Ton">Crane: 50-Ton</option>
+                    <option value="Crane: 70-Ton">Crane: 70-Ton</option>
+                    <option value="Crane: 100-Ton">Crane: 100-Ton</option>
+                    <option value="Forklift: 3-Ton">Forklift: 3-Ton</option>
+                    <option value="Forklift: 5-Ton">Forklift: 5-Ton</option>
+                    <option value="Forklift: 7-Ton">Forklift: 7-Ton</option>
+                    <option value="Forklift: 10-Ton">Forklift: 10-Ton</option>
+                    <option value="Boomloader: 523">Boomloader: 523</option>
+                    <option value="Boomloader: 540">Boomloader: 540</option>
+
+                  </select>
+
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Description</label>
                       <input
             type="text"
+            required
             name="description"
             value={formData.description || ""}
             onChange={handleChange}
@@ -518,6 +543,7 @@ Action
             <label className="block text-sm font-medium text-gray-700">Amount</label>
                       <input
             type="text"
+            required
             name="amount"
             value={formData.amount || ""}
             onChange={handleChange}
@@ -526,16 +552,30 @@ Action
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Payment Status</label>
-                      <input
+                      {/* <input
             type="text"
             name="payment_status"
             value={formData.payment_status || ""}
+            required
             onChange={handleChange}
             className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
+            /> */}
+            <select
+            name="payment_status"
+            value={formData.payment_status || ""}
+            required
+            onChange={handleChange}
+                    className="mt-1 block h-8  w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="">Select payment status</option>
+                    <option value="Online">Online</option>
+                    <option value="Cash">Cash</option>
+
+                  </select>
+
           </div>
          </div>
-        <button type="submit"   className="bg-blue-500 text-white py-2 px-4 rounded mt-4"
+        <button type="submit"   className="bg-[#ea8732] text-white py-2 px-4 rounded mt-4"
 >Save Changes</button>
       </form>
       </div>
@@ -545,18 +585,20 @@ Action
 <Modal show={deleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
   <h2 className="text-lg font-bold">Confirm Delete</h2>
   <p>Are you sure you want to delete this customer?</p>
+ <div className='flex items-center justify-center'>
   <button
     onClick={handleConfirmDelete}
-    className="bg-red-500 text-white py-2  px-4 rounded mt-4"
+    className="bg-red-500 text-white py-1  px-2 rounded mt-4"
   >
-    Yes, Delete
+    Delete
   </button>
   <button
     onClick={() => setDeleteModalOpen(false)}
-    className="bg-gray-500 text-white py-2 px-4 rounded mt-4 ml-2"
+    className="bg-gray-500 text-white py-1 px-2 rounded mt-4 ml-2"
   >
     Cancel
   </button>
+  </div>
 </Modal>
     </div>
   );

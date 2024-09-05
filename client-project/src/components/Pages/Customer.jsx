@@ -524,6 +524,7 @@ function Employeetask() {
       <label className="block text-sm font-medium text-gray-700">Name</label>
       <input
                   type="text"
+                  required
                   name="name"
                   value={formData.name || ""}
                   onChange={handleChange}
@@ -532,13 +533,34 @@ function Employeetask() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Vehicle</label>
-                    <input
+                    {/* <input
                   type="text"
                   name="vehicle"
                   value={formData.vehicle || ""}
                   onChange={handleChange}
                   className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  />
+                  /> */}
+             
+<select
+            name="vehicle"
+            required
+            value={formData.vehicle || ""}
+            onChange={handleChange}
+                    className="mt-1 block h-8  w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="">Select vehicle</option>
+                    <option value="Crane: 50-Ton">Crane: 50-Ton</option>
+                    <option value="Crane: 70-Ton">Crane: 70-Ton</option>
+                    <option value="Crane: 100-Ton">Crane: 100-Ton</option>
+                    <option value="Forklift: 3-Ton">Forklift: 3-Ton</option>
+                    <option value="Forklift: 5-Ton">Forklift: 5-Ton</option>
+                    <option value="Forklift: 7-Ton">Forklift: 7-Ton</option>
+                    <option value="Forklift: 10-Ton">Forklift: 10-Ton</option>
+                    <option value="Boomloader: 523">Boomloader: 523</option>
+                    <option value="Boomloader: 540">Boomloader: 540</option>
+
+                  </select>
+
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Description</label>
@@ -547,6 +569,7 @@ function Employeetask() {
                   name="description"
                   value={formData.description || ""}
                   onChange={handleChange}
+                  required
                   className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   />
                 </div>
@@ -567,28 +590,58 @@ function Employeetask() {
                   name="contact"
                   value={formData.contact || ""}
                   onChange={handleChange}
+                  required
                   className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Deals</label>
-                            <input
+                            {/* <input
                   type="text"
                   name="deal"
                   value={formData.deals || ""}
+                  required
                   onChange={handleChange}
                   className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  />
+                  /> */}
+
+<select
+          name="deals"
+          value={formData.deals || ""}
+          required
+          onChange={handleChange}
+                    className="mt-1 block h-8  w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="">Select Deal</option>
+                    <option value="Online">Online</option>
+                    <option value="Cash">Cash</option>
+
+                  </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Customer</label>
-                           <input
+                           {/* <input
                   type="text"
                   name="customer"
+                  required
                   value={formData.customer || ""}
                   onChange={handleChange}
                   className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  />
+                  /> */}
+              
+<select
+         name="customer"
+         required
+         value={formData.customer || ""}
+         onChange={handleChange}
+                   className="mt-1 block h-8  w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="">Select customer</option>
+                    <option value="Online">Old</option>
+                    <option value="Cash">New</option>
+
+                  </select>
+              
                 </div>
               </div>
               <button type="submit"   className="bg-blue-500 text-white py-2 px-4 rounded mt-4"

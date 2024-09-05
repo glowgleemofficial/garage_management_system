@@ -465,6 +465,7 @@ Action
 <input
             type="text"
             name="name"
+            required
             value={formData.name || ""}
             onChange={handleChange}
             className="mt-1 block p-2 h-8 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -475,6 +476,7 @@ Action
               <input
             type="text"
             name="location"
+            required
             value={formData.location || ""}
             onChange={handleChange}
             className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -495,6 +497,7 @@ Action
                       <input
             type="text"
             name="advance"
+            required
             value={formData.advance || ""}
             onChange={handleChange}
             className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -505,6 +508,7 @@ Action
             <label className="block text-sm font-medium text-gray-700">Pending</label>
                       <input
             type="text"
+            required
             name="pending"
             value={formData.pending || ""}
             onChange={handleChange}
@@ -516,20 +520,34 @@ Action
                       <input
             type="text"
             name="total"
-            value={formData.total || ""}
+          required
+          value={formData.total || ""}
             onChange={handleChange}
             className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Payment Status</label>
-                     <input
+                     {/* <input
             type="text"
             name="payment_status"
             value={formData.payment_status || ""}
             onChange={handleChange}
             className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
+            /> */}
+            
+<select
+          name="payment_status"
+          value={formData.payment_status || ""}
+          onChange={handleChange}
+          required
+          className="mt-1 block h-8  w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="">Select Payment Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Successful">Successful</option>
+
+                  </select>
           </div>
         </div>
         <button type="submit"   className="bg-blue-500 text-white py-2 px-4 rounded mt-4"

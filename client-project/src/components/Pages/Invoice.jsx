@@ -567,6 +567,7 @@ Action
 <input
             type="text"
             name="name"
+            required
             value={formData.name || ""}
             onChange={handleChange}
             className="mt-1 block p-2 h-8 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -574,19 +575,41 @@ Action
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Vehicle</label>
-              <input
+              {/* <input
             type="text"
             name="vehicle"
             value={formData.vehicle || ""}
+            required
             onChange={handleChange}
             className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
+            /> */}
+                         <select
+            name="vehicle"
+            required
+            value={formData.vehicle || ""}
+            onChange={handleChange}
+                    className="mt-1 block h-8  w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="">Select vehicle</option>
+                    <option value="Crane: 50-Ton">Crane: 50-Ton</option>
+                    <option value="Crane: 70-Ton">Crane: 70-Ton</option>
+                    <option value="Crane: 100-Ton">Crane: 100-Ton</option>
+                    <option value="Forklift: 3-Ton">Forklift: 3-Ton</option>
+                    <option value="Forklift: 5-Ton">Forklift: 5-Ton</option>
+                    <option value="Forklift: 7-Ton">Forklift: 7-Ton</option>
+                    <option value="Forklift: 10-Ton">Forklift: 10-Ton</option>
+                    <option value="Boomloader: 523">Boomloader: 523</option>
+                    <option value="Boomloader: 540">Boomloader: 540</option>
+
+                  </select>
+
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Description</label>
                       <input
             type="text"
             name="description"
+            required
             value={formData.description || ""}
             onChange={handleChange}
             className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -608,6 +631,7 @@ Action
             type="text"
             name="Location"
             value={formData.Location || ""}
+            required
             onChange={handleChange}
             className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
@@ -627,6 +651,7 @@ Action
                      <input
             type="text"
             name="advance"
+            required
             value={formData.advance || ""}
             onChange={handleChange}
             className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -639,20 +664,35 @@ Action
             type="text"
             name="pending"
             value={formData.pending || ""}
+            required
             onChange={handleChange}
             className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700">Project Status</label>
-                     <input
+            <label className="block text-sm font-medium text-gray-700">Amount Status</label>
+                     {/* <input
             type="text"
             name="project_status"
+          required
             value={formData.project_status || ""}
             onChange={handleChange}
             className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
+            /> */}
+                  
+<select
+           name="project_status"
+            value={formData.project_status || ""}
+            onChange={handleChange}
+          required
+          className="mt-1 block h-8  w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="">Select Payment Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Complete">Complete</option>
+
+                  </select>
           </div>
         </div>
         <button type="submit"   className="bg-blue-500 text-white py-2 px-4 rounded mt-4"

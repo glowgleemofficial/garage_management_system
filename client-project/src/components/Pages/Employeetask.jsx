@@ -532,6 +532,7 @@ Action
             name="name"
             value={form.name || ""}
             onChange={handleChange}
+            required
             className="mt-1 block p-2 h-8 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
@@ -542,6 +543,7 @@ Action
             name="company"
             value={form.company || ""}
             onChange={handleChange}
+            required
             className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
@@ -552,6 +554,7 @@ Action
             name="location"
             value={form.location || ""}
             onChange={handleChange}
+            required
             className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
@@ -562,18 +565,45 @@ Action
             name="task"
             value={form.task || ""}
             onChange={handleChange}
+            required
             className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Working Hour</label>
-                      <input
+                      {/* <input
             type="text"
             name="work_hours"
             value={form.work_hours || ""}
             onChange={handleChange}
+            required
             className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
+            /> */}
+            <select
+                    name="work_hours"
+                    value={form.work_hours || ""}
+                    onChange={handleChange}
+                    required
+                    className="mt-1 block h-8  w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="">Select Work Hours</option>
+                    <option value="1">1 Hour</option>
+                    <option value="2">2 Hours</option>
+                    <option value="3">3 Hours</option>
+                    <option value="4">4 Hours</option>
+                    <option value="5">5 Hours</option>
+                    <option value="6">6 Hours</option>
+                    <option value="7">7 Hours</option>
+                    <option value="8">8 Hours</option>
+                    <option value="9">9 Hours</option>
+                    <option value="10">10 Hours</option>
+                    <option value="11">11 Hours</option>
+                    <option value="12">12 Hours</option>
+                    <option value="13">13 Hours</option>
+                    <option value="14">14 Hours</option>
+                    <option value="15">15 Hours</option>
+                  </select>
+
           </div>
           <div>
   <label className="block text-sm font-medium text-gray-700">Date</label>
@@ -597,13 +627,26 @@ Action
 </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Task Status</label>
-                     <input
+                     {/* <input
             type="text"
             name="task_status"
             value={form.task_status || ""}
             onChange={handleChange}
+            required
             className="mt-1 block h-8 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
+            /> */}
+          <select
+                   name="task_status"
+                   value={form.task_status || ""}
+                   onChange={handleChange}
+                   required
+                    className="mt-1 block h-8  w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="">Select  Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Complete">Complete</option>
+                  </select>
+
           </div>
         
         </div>
