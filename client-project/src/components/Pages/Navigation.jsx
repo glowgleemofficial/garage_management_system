@@ -6,7 +6,7 @@ function Navigation() {
   return (
     <nav>
     {/* Navigation Links */}
-    <Link to="/">
+    <Link to="/home">
       <button className="block text-[#3d3d3d] text-sm py-2.5 px-4 rounded hover:bg-[#ea8732] hover:text-white font-bold w-full text-left">
         Dashboard
       </button>
