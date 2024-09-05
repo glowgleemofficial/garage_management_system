@@ -58,7 +58,7 @@ function Employeetask() {
   };
 
   const downloadExcel = (id) => {
-    axios.get(`http://localhost:5000/pending/getexcel/${id}`, { responseType: 'blob' })
+    axios.get(`http://77.37.49.209:5000/pending/getexcel/${id}`, { responseType: 'blob' })
       .then((response) => {
         const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         saveAs(blob, 'data.xlsx');
@@ -105,7 +105,7 @@ function Employeetask() {
     };
 
     try {
-      const result = await fetch("http://localhost:5000/pending/post/E-pending", {
+      const result = await fetch("http://77.37.49.209:5000/pending/post/E-pending", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -123,7 +123,7 @@ function Employeetask() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://localhost:5000/pending/get/E-pending");
+      const response = await fetch("http://77.37.49.209:5000/pending/get/E-pending");
       const data = await response.json();
       setTaskData(data.rows);
       setFilteredData(data.rows);
@@ -182,7 +182,7 @@ function Employeetask() {
   
   const handleConfirmDelete = async () => {
     try {
-      await fetch(`http://localhost:5000/pending/delete/${currentStatus.id}`, {
+      await fetch(`http://77.37.49.209:5000/pending/delete/${currentStatus.id}`, {
         method: 'DELETE',
       });
       setDeleteModalOpen(false);
@@ -203,7 +203,7 @@ function Employeetask() {
     e.preventDefault();
 
     try {
-      await fetch(`http://localhost:5000/pending/update/${currentStatus.id}`, {
+      await fetch(`http://77.37.49.209:5000/pending/update/${currentStatus.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

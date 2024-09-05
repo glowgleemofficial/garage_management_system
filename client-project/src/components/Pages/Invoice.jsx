@@ -74,7 +74,7 @@ function Employeetask() {
 
 
   const downloadExcel = (id) => {
-    axios.get(`http://localhost:5000/invoice/getexcel/${id}`, { responseType: 'blob' })
+    axios.get(`http://77.37.49.209:5000/invoice/getexcel/${id}`, { responseType: 'blob' })
       .then((response) => {
         const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         saveAs(blob, 'data.xlsx');
@@ -121,7 +121,7 @@ function Employeetask() {
     };
 
     try {
-      const result = await fetch("http://localhost:5000/invoice/post/E-invoice", {
+      const result = await fetch("http://77.37.49.209:5000/invoice/post/E-invoice", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -145,7 +145,7 @@ function Employeetask() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://localhost:5000/invoice/get/E-invoice");
+      const response = await fetch("http://77.37.49.209:5000/invoice/get/E-invoice");
       const data = await response.json();
       setTaskData(data.rows);
       setFilteredData(data.rows);
@@ -213,7 +213,7 @@ function Employeetask() {
   
   const handleConfirmDelete = async () => {
     try {
-      await fetch(`http://localhost:5000/invoice/delete/${currentInvoice.id}`, {
+      await fetch(`http://77.37.49.209:5000/invoice/delete/${currentInvoice.id}`, {
         method: 'DELETE',
       });
       setDeleteModalOpen(false);
@@ -234,7 +234,7 @@ function Employeetask() {
     e.preventDefault();
 
     try {
-      await fetch(`http://localhost:5000/invoice/update/${currentInvoice.id}`, {
+      await fetch(`http://77.37.49.209:5000/invoice/update/${currentInvoice.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
