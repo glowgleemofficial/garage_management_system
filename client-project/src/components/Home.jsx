@@ -3,12 +3,19 @@ import { Link } from "react-router-dom";
 import Logo from "../components/Pages/images/logo.jpeg";
 import Notification from "../components/Pages/images/Notification.png"
 import DashboardDonutChart from './DashboardDonutChart';
+import { useAuth } from '../contexts/AuthContext';
 
 function Home() {
+  
+  const { logout } = useAuth();
+
+  
   return (
     
     <body>
+
       <div className="bg-gray-100 h-screen flex">
+
         <aside className="w-64 bg-white text-white flex-shrink-0">
           <div className="p-6">
             <img
@@ -67,11 +74,12 @@ function Home() {
                   Invoice Generate
                 </button>
               </Link>
+              </nav>
            
-              <button className="block text-[#3d3d3d] text-sm py-2.5 px-4 rounded hover:bg-[#ea8732] hover:text-white font-bold w-full text-left">
+              <button      onClick={() => logout()}
+               className="block text-[#3d3d3d] text-sm py-2.5 px-4 rounded hover:bg-[#ea8732] hover:text-white font-bold w-full text-left">
                 Sign Out
               </button>
-            </nav>
           </div>
         </aside>
 

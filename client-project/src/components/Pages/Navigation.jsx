@@ -1,8 +1,13 @@
 import React from 'react'
 import { Link } from "react-router-dom";
+import { useAuth } from '../../contexts/AuthContext';
+
 
 
 function Navigation() {
+  const { logout } = useAuth();
+
+  
   return (
     <nav>
     {/* Navigation Links */}
@@ -56,7 +61,8 @@ function Navigation() {
       Invoice Generate
       </button>
     </Link>
-    <button className="block text-[#3d3d3d] text-sm py-2.5 px-4 rounded hover:bg-[#ea8732] hover:text-white font-bold w-full text-left">
+    <button   onClick={() => logout()}
+    className="block text-[#3d3d3d] text-sm py-2.5 px-4 rounded hover:bg-[#ea8732] hover:text-white font-bold w-full text-left">
       Sign Out
     </button>
   </nav>
