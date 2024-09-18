@@ -11,14 +11,6 @@ const connectDB = require('./Config/db');
 app.use(cors()); // To allow cross-origin requests
 app.use(express.json());
 
-// DataBase Connect
-connectDB.connect(function(err) {
-  if (err) {
-    console.error('Error connecting to the database:', err);
-  } else {
-    console.log("Database is connected!");
-  }
-});
 
 // Route to fetch dashboard data
 app.get('/api/dashboard-data', (req, res) => {
