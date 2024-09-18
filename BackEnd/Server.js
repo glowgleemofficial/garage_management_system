@@ -11,14 +11,6 @@ const connectDB = require('./Config/db');
 app.use(cors());
 app.use(express.json());
 
-// Ensure that we connect to the database once, not repeatedly in each request
-connectDB.connect(function (err) {
-  if (err) {
-    console.error('Error connecting to the database:', err);
-  } else {
-    console.log("Database is connected!");
-  }
-});
 
 // Route to fetch dashboard data
 app.get('/api/dashboard-data', (req, res) => {
