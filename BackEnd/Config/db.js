@@ -3,7 +3,7 @@ var mysql = require('mysql');
 var connectDB = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: '',
+  password: 'P@kistan1444',
   database: 'Garage_Management_System'
 });
 

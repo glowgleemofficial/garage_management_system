@@ -1,17 +1,15 @@
-const express= require('express')
-const router = express.Router()
+// customer.js (Routes)
 
-const {postdata,getdata , getcusterexcel,deletedata, updatedata ,chartdata} =require('../Controller/customerController') ;
+const express = require('express');
+const router = express.Router();
+const { postdata, getdata, getcusterexcel, deletedata, updatedata, chartdata } = require('../Controller/customerController'); // Adjust the path to customerController
 
-//Get Request All and By ID
+// Define routes and associate them with controller functions
+router.post('/post/E-customer', postdata);
+router.get('/getexcelcustomer/:id', getcusterexcel);
+router.delete('/delete/:id', deletedata);
+router.put('/update/:id', updatedata);
+router.get('/get/E-customer', getdata);
+router.get('/chartdata', chartdata);
 
-router.route('/post/E-customer').post(postdata)
-router.route('/getexcelcustomer/:id').get(getcusterexcel)
-router.route('/delete/:id').delete(deletedata)
-router.route('/update/:id').put(updatedata)
-router.route('/get/E-customer').get(getdata)
-router.route('/chartdata').get(chartdata)
-
-
-
-module.exports= router;
+module.exports = router;
